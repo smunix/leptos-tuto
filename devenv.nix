@@ -10,18 +10,22 @@
   env.CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_LINKER = "lld";
 
   # https://devenv.sh/packages/
-  packages = with pkgs; [
+  packages = with pkgs;
+  with inputs.fenix.packages.${system}; [
     cargo-generate
     cargo-leptos
-    # https://jordankaye.dev/posts/rust-wasm-nix/
-    (with inputs.fenix.packages.x86_64-linux;
+    (
+      # https://jordankaye.dev/posts/rust-wasm-nix/
       combine [
         stable.toolchain
         targets.wasm32-unknown-unknown.stable.rust-std
-      ])
+      ]
+    )
     git
+    leptosfmt
     llvmPackages.bintools
     nodejs
+    rust-analyzer
     trunk
     wasm-pack
   ];
